@@ -1,0 +1,17 @@
+POST http://localhost:3001/api/v1/user/login
+Content-Type: application/json
+
+{
+    "email":"iamjesse75@gmail.com",
+    "password": "p@ssw0rD"
+}
+
+
+
+###
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2ViOTJmNWY1YjUyMjdiNDBkNGViNGEiLCJpYXQiOjE2NzYzODk0MjUsImV4cCI6MTY3NjM5MDI2NX0.bfCMjhA3mxINy9OFl5ZjkFKJlEk1i6lKREfM5y0gu6Q
+POST http://localhost:3001/api/v1/product/add-new-product
+
+Authorization: 
+

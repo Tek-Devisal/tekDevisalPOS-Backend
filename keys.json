@@ -1,0 +1,6 @@
+{
+    "tekdevisalPOS": {
+        "port": 3001,
+        "db_name": "tekdevisalPOS"
+    }
+}
