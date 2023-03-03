@@ -1,5 +1,7 @@
 const Product = require("../schemas/Product");
 const Invoice = require("../schemas/Invoice");
+const Returns = require("../schemas/Returns");
+
 
 function generateInvoiceNumber() {
   // var count = oldInvoiceNumber.match(/\d*$/);
@@ -25,6 +27,53 @@ async function fetchInvoice({ store_id }) {
   } catch (error) {
     return { message: "an error occurred, please try again" };
   }
+}
+
+async function fetchInvoicePerDay({ store_id }) {
+  // try {
+  //   const result = await Invoice.find({ store_id });
+  //   return { message: "success", data: result };
+  // } catch (error) {
+  //   return { message: "an error occurred, please try again" };
+  // }
+  // try{
+    const salesPerDay = await Invoice.aggregate([
+      {
+        $match: {
+          shop: store_id,
+          payment_type: 'Cash'
+        },
+      },
+      {
+        $sort: {
+          createdAt: -1,
+        },
+      },
+      {
+        $unwind: '$products_summary',
+      },
+      {
+        $group: {
+          _id: {
+            $dateToString: {
+              format: '%Y-%m-%d',
+              date: '$createdAt',
+            },
+          },
+          goods_sold: {$sum: '$products_summary.quantity'},
+          totalSales: { $sum: '$amount_paid' },
+          goods_returned: { $sum: 0}
+        },
+      },
+    ])
+   
+    return {message: "success", data: salesPerDay}
+  // } catch (error) {
+  //   return { message: "an error occurred, please try again" };
+  // }
+  // console.log(salesPerDay);
+    // .then(salesByDate => console.log('Sales by date:', salesByDate))
+    // .catch(err => console.error('Error retrieving sales from database', err));
 }
 
 async function addInvoice({ req }) {
@@ -53,4 +102,4 @@ async function addInvoice({ req }) {
   }
 }
 
-module.exports = { fetchInvoice, addInvoice };
+module.exports = { fetchInvoice, addInvoice, fetchInvoicePerDay };

@@ -8,9 +8,11 @@ const keys = require("../keys.json");
 app.set("keys", keys.tekdevisalPOS);
 
 const routes = require("../routes/v1/routes");
+// const { default: mongoose } = require("mongoose");
 
 //connect to database
 const mongoose = require("./database/mongodb")(app.get("keys").db_name);
+// mongoose.connect(process.env.DB_URI, () => console.log("Conected"))
 
 // Using CORS
 app.use(cors());

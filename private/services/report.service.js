@@ -4,6 +4,8 @@ const fs = require("fs");
 const Invoice = require("../schemas/Invoice");
 const { jsPDF } = require("jspdf");
 const FileSaver = require("file-saver");
+const { salesYearly, salesWeekly, monthSales, salesToday, fetchMonthSales } = require("./sales.services");
+
 async function fetchReports({ req, res }) {
   const { shop_id } = req.body;
   // const results = await Invoice.find({ shop_id });
@@ -70,4 +72,58 @@ async function fetchReports({ req, res }) {
   } catch (error) {}
 }
 
-module.exports = { fetchReports };
+
+async function fetchDailyReports({ req, res }) {
+  const { shop_id } = req.body;
+  const dailyreport = await Invoice.find({ shop_id });
+
+  console.log(sales);
+}
+
+
+async function dailyCashRecieved({ req, res }){
+  const { shop_id } = req.body;
+  
+  const daily_sales = await salesToday({req}, true)
+  const weekly_sales = await salesWeekly({req}, true)
+  const monthly_sales = await fetchMonthSales({req}, true)
+  const yearly_sales = await salesYearly({req}, true)
+
+  return {
+    message: "success",
+    data: {
+      "daily_sales": 34340,
+      "weekly_sales": weekly_sales ?? 0,
+      "monthly_sales": 1220,
+      "yearly_sales": yearly_sales ?? 0
+    }
+  }
+  
+  // console.log("yearly:"+yearly_sales);
+}
+
+
+
+async function dailyBorrowed({ req, res }){
+  const { shop_id } = req.body;
+  
+  const daily_borrowed = await salesToday({req}, true)
+  const weekly_borrowed = await salesWeekly({req}, true)
+  const monthly_borrowed = await fetchMonthSales({req}, true)
+  const yearly_borrowed = await salesYearly({req}, true)
+
+  return {
+    message: "success",
+    data: {
+      "daily_borrowed": 34340,
+      "weekly_borrowed": 332,
+      "monthly_borrowed": 1220,
+      "yearly_borrowed": 555
+    }
+  }
+  
+  // console.log("yearly:"+yearly_sales);
+}
+
+
+module.exports = { fetchReports, fetchDailyReports, dailyCashRecieved, dailyBorrowed };

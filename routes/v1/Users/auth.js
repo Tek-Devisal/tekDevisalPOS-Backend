@@ -68,25 +68,28 @@ router.post("/login", async (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
 
+  // console.log(req.body)
+
   //simple validation of the email and password
   const { error } = loginValidation(req.body);
   if (error)
     return res.json({ status: 400, message: error.details[0].message });
 
-  //check if email exists & comparing passwords
+  // check if email exists & comparing passwords
   const user = await User.findOne({ email: email });
+  // console.log(email)
 
-  if (!user) return res.json({ status: 400, message: "Invalid email" });
+  if (!user) 
+    return res.json({ status: 400, message: "Invalid email" });
 
   const validPass = await bcrypt.compareSync(password, user.password);
   if (!validPass) return res.json({ status: 400, message: "Invalid password" });
 
   //create and assign a token
-  // const token = jwt.sign({_id: user._id}, process.env.SECRET)
+  const token = jwt.sign({_id: user._id}, process.env.SECRET)
   const { accessToken, refreshToken } = await generateTokens(user);
 
   const result = await Shop.find({ owner_id: user._id });
-
 
   res.header("auth-token", accessToken).json({
     email,
@@ -98,7 +101,8 @@ router.post("/login", async (req, res) => {
     id: user._id,
     usertype: user.usertype,
     name: user.name,
-    shop_name: result[0].shop_name
+    shop_name: result[0].shop_name,
+    shop_id: result[0]._id
   });
 });
 
