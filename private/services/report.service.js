@@ -92,10 +92,10 @@ async function dailyCashRecieved({ req, res }){
   return {
     message: "success",
     data: {
-      "daily_sales": 34340,
-      "weekly_sales": weekly_sales ?? 0,
-      "monthly_sales": 1220,
-      "yearly_sales": yearly_sales ?? 0
+      "daily_sales": 0,
+      "weekly_sales": 0,
+      "monthly_sales": 0,
+      "yearly_sales": 0
     }
   }
   
@@ -115,10 +115,10 @@ async function dailyBorrowed({ req, res }){
   return {
     message: "success",
     data: {
-      "daily_borrowed": 34340,
-      "weekly_borrowed": 332,
-      "monthly_borrowed": 1220,
-      "yearly_borrowed": 555
+      "daily_borrowed": 0,
+      "weekly_borrowed": 0,
+      "monthly_borrowed": 0,
+      "yearly_borrowed": 0
     }
   }
   

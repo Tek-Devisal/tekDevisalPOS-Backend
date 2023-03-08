@@ -19,9 +19,10 @@ router.post("", verify, async (req, res, next) => {
 
 //FETCH INVOICE PER DAY
 router.post("/fetch-invoice-per-day", verify, async (req, res, next) => {
-  const { store_id } = req.body;
+  const { shop_id } = req.body;
+
   try {
-    return res.status(200).json(await fetchInvoicePerDay({ store_id }));
+    return res.status(200).json(await fetchInvoicePerDay({ shop_id }));
   } catch (error) {
     next(error);
   }

@@ -1,6 +1,7 @@
 const Product = require("../schemas/Product");
 const Invoice = require("../schemas/Invoice");
 const Returns = require("../schemas/Returns");
+const { default: mongoose } = require("mongoose");
 
 
 function generateInvoiceNumber() {
@@ -29,7 +30,7 @@ async function fetchInvoice({ store_id }) {
   }
 }
 
-async function fetchInvoicePerDay({ store_id }) {
+async function fetchInvoicePerDay({ shop_id }) {
   // try {
   //   const result = await Invoice.find({ store_id });
   //   return { message: "success", data: result };
@@ -40,7 +41,7 @@ async function fetchInvoicePerDay({ store_id }) {
     const salesPerDay = await Invoice.aggregate([
       {
         $match: {
-          shop: store_id,
+          shop_id: mongoose.Types.ObjectId(shop_id),
           payment_type: 'Cash'
         },
       },
